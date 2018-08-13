@@ -1,28 +1,19 @@
-FROM joshendriks/walletbase
+FROM chainmapper/walletbase-xenial
 
-ENV GIT_COIN_URL    https://github.com/Seather/Seather.git
-ENV GIT_COIN_NAME   seather   
+ENV WALLET_URL=https://github.com/Seather/Seather/releases/download/v1.0.0/linux64.tar.gz
 
-RUN	git clone $GIT_COIN_URL $GIT_COIN_NAME \
-	&& cd $GIT_COIN_NAME \
-	&& chmod +x autogen.sh \
-	&& chmod +x share/genbuild.sh \
-	&& chmod +x src/leveldb/build_detect_platform \
-	&& ./autogen.sh && ./configure \
-	&& make \
-	&& make install \
-	&& cd / && rm -rf /$GIT_COIN_NAME \
-	&& mkdir /data \
-	&& mkdir /data/.seather
-	
-#Add a config so you can run without providing a seather.conf through a volume
-COPY seather.conf /data/.seather/seather.conf
+RUN wget $WALLET_URL -O /tmp/wallet.tar.gz \
+	&& cd /usr/local/bin \
+	&& tar xvzf /tmp/wallet.tar.gz --strip-components 1\
+	&& rm /tmp/wallet.tar.gz
 
-#rpc port and main port
-EXPOSE 22501 22500
-
+RUN mkdir /data
 ENV HOME /data
 
+#rpc port & main port
+EXPOSE 22501 22500
+
 COPY start.sh /start.sh
-RUN chmod 777 /start.sh
-CMD /start.sh
+COPY gen_config.sh /gen_config.sh
+RUN chmod 777 /*.sh
+CMD /start.sh seather.conf STR seatherd

@@ -2,17 +2,15 @@
 Wallet and daemon for Seather [STR] cryptocurrency on docker
 
 # Quickstart
-Type `docker run -it joshendriks/seather` and see the wallet starting.
+Type `docker run -it -e "USER=me" -e "PASSWORD=secret" -e "RPCALLOW=127.0.0.1" chainmapper/seather` and see the wallet starting.
+
+Alternatively type `docker run -it -v "<path_to_config>:/config/seather.conf" chainmapper/seather` to use your own config.
 
 ```
-Docker Seather wallet
+Docker STR wallet
 
-By: Jos Hendriks
-GitHub: https://github.com/joshendriks/
-Docker: https://hub.docker.com/r/joshendriks/
-
-BTC: 1NCZgpMMoNwL6ZeFsEQ2kRZEzzzTd5TuGk
-STR: SdeKR81LNaym9XqGzNePPGUN32XESKeNxM
+By: ChainMapper
+Website: https://chainmapper.com
 
 Starting STR daemon...
 ```
@@ -21,11 +19,6 @@ Starting STR daemon...
 Use a volume to store all data. The image stores it's data in `/data`. So mapping that volume will do the trick.
 
 Additionally you can override the config and wallet file using volumes pointing to `/config/seather.conf` and `/config/wallet.data`
-
-# Donations:
-BTC: 1NCZgpMMoNwL6ZeFsEQ2kRZEzzzTd5TuGk
-
-STR: SdeKR81LNaym9XqGzNePPGUN32XESKeNxM
 
 # License
 MIT, see LICENSE file
